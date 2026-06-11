@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Valedictorian Protocol</title>
+<meta name="author" content="Israel Adigun — Software Developer, 23, UWM grad">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,500..900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAFBF9;
+    --grid:#E4EAE5;
+    --ink:#1A2421;
+    --ink-soft:#4A5651;
+    --chem:#C75B12;
+    --chem-soft:#FBEFE4;
+    --phys:#1E5AC8;
+    --phys-soft:#E8EFFC;
+    --bio:#1F7A4D;
+    --bio-soft:#E7F3EC;
+    --eng:#6D28D9;
+    --eng-soft:#F0EAFB;
+    --synth:#1A2421;
+    --synth-soft:#ECEFED;
+    --rule:#CBD5CE;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+  body{
+    font-family:'Atkinson Hyperlegible',system-ui,sans-serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:28px 28px;
+    line-height:1.55;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+  .mono{font-family:'JetBrains Mono',monospace}
+
+  /* ---------- HEADER ---------- */
+  header{margin-bottom:36px}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);display:flex;flex-wrap:wrap;gap:8px 20px;margin-bottom:18px;
+  }
+  .eyebrow span::before{content:"▸ ";color:var(--chem)}
+  h1{
+    font-family:'Archivo',sans-serif;
+    font-variation-settings:'wdth' 125;
+    font-weight:850;
+    font-size:clamp(40px,8vw,76px);
+    line-height:.96;letter-spacing:-.015em;
+    text-transform:uppercase;
+  }
+  h1 .accent{
+    background:linear-gradient(90deg,var(--chem),var(--phys) 38%,var(--bio) 72%,var(--eng));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .thesis{max-width:620px;margin-top:18px;font-size:17px;color:var(--ink-soft)}
+  .thesis strong{color:var(--ink)}
+
+  /* ---------- TIMELINE (signature) ---------- */
+  .timeline{margin:44px 0 12px;border:1.5px solid var(--ink);background:#fff;padding:18px 18px 14px}
+  .timeline-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px;display:flex;justify-content:space-between}
+  .tl-grid{display:grid;grid-template-columns:repeat(24,1fr);gap:3px}
+  .tl-cell{height:34px;position:relative;border-radius:2px}
+  .tl-cell .wk{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:9px;color:#fff;font-weight:700;opacity:.85}
+  .tl-chem{background:var(--chem)} .tl-phys{background:var(--phys)} .tl-bio{background:var(--bio)} .tl-synth{background:var(--ink)}
+  .tl-english{margin-top:5px;height:9px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--eng),var(--eng) 14px,#8B5CF6 14px,#8B5CF6 28px)}
+  .tl-english-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--eng);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+  .legend{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+  /* ---------- DAILY LOOP ---------- */
+  .loop{margin:48px 0}
+  .loop-track{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1.5px solid var(--ink);background:#fff}
+  .loop-step{padding:16px 14px;border-right:1px dashed var(--rule);position:relative}
+  .loop-step:last-child{border-right:none;background:var(--eng-soft)}
+  .loop-step .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.1em}
+  .loop-step h4{font-family:'Archivo',sans-serif;font-variation-settings:'wdth' 125;font-weight:800;font-size:16px;text-transform:uppercase;margin:4px 0 6px}
+  .loop-step p{font-size:13px;color:var(--ink-soft);line-height:1.45}
+  .loop-step .t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;margin-top:8px;display:block}
+  .loop-step:last-child h4, .loop-step:last-child .t{color:var(--eng)}
+
+  /* ---------- SECTIONS ---------- */
+  .phase{margin-top:64px}
+  .phase-head{display:flex;align-items:baseline;gap:16px;border-bottom:3px solid var(--pc,var(--ink));padding-bottom:10px;margin-bottom:6px;flex-wrap:wrap}
+  .phase-head .tag{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--pc,var(--ink));padding:4px 10px;border-radius:2px}
+  .phase-head h2{font-family:'Archivo',sans-serif;font-variation-settings:'wdth' 125;font-weight:850;font-size:clamp(26px,4.5vw,38px);text-transform:uppercase;letter-spacing:-.01em}
+  .phase-head .span{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-soft)}
+  .phase-why{font-size:15px;color:var(--ink-soft);max-width:640px;margin:12px 0 24px}
+  .phase-why strong{color:var(--ink)}
+
+  .week{
+    display:grid;grid-template-columns:84px 1fr;gap:0;
+    background:#fff;border:1px solid var(--rule);border-left:4px solid var(--pc,var(--ink));
+    margin-bottom:10px;
+  }
+  .week .wknum{
+    background:var(--psoft,var(--synth-soft));
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;padding:14px 6px;border-right:1px dashed var(--rule);
+  }
+  .week .wknum .lab{font-size:9px;letter-spacing:.18em;color:var(--ink-soft)}
+  .week .wknum .num{font-size:26px;font-weight:700;color:var(--pc,var(--ink));line-height:1.1}
+  .week .body{padding:14px 18px 16px}
+  .week h3{font-family:'Archivo',sans-serif;font-variation-settings:'wdth' 125;font-weight:800;font-size:17px;text-transform:uppercase;margin-bottom:6px}
+  .week .topics{font-size:14.5px;margin-bottom:8px}
+  .week .drill{font-size:13px;color:var(--ink-soft)}
+  .week .drill b{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--pc,var(--ink))}
+  .boss{
+    border:1.5px solid var(--pc,var(--ink));background:var(--psoft,#fff);
+    padding:14px 18px;margin-top:14px;font-size:14.5px;
+  }
+  .boss b{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--pc,var(--ink))}
+
+  /* phase color scoping */
+  .p-chem{--pc:var(--chem);--psoft:var(--chem-soft)}
+  .p-phys{--pc:var(--phys);--psoft:var(--phys-soft)}
+  .p-bio{--pc:var(--bio);--psoft:var(--bio-soft)}
+  .p-eng{--pc:var(--eng);--psoft:var(--eng-soft)}
+  .p-synth{--pc:var(--ink);--psoft:var(--synth-soft)}
+
+  /* ---------- ENGLISH ---------- */
+  .eng-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .eng-card{background:#fff;border:1px solid var(--rule);border-top:4px solid var(--eng);padding:16px 18px}
+  .eng-card h3{font-family:'Archivo',sans-serif;font-variation-settings:'wdth' 125;font-weight:800;font-size:15px;text-transform:uppercase;color:var(--eng);margin-bottom:6px}
+  .eng-card .freq{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:8px}
+  .eng-card p{font-size:14px}
+  .ladder{background:#fff;border:1px solid var(--rule);border-top:4px solid var(--eng);padding:16px 18px;margin-top:10px}
+  .ladder h3{font-family:'Archivo',sans-serif;font-variation-settings:'wdth' 125;font-weight:800;font-size:15px;text-transform:uppercase;color:var(--eng);margin-bottom:10px}
+  .ladder ol{list-style:none;counter-reset:m;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .ladder li{counter-increment:m;font-size:13.5px;padding:8px 10px;background:var(--eng-soft);border-radius:2px}
+  .ladder li::before{content:"M" counter(m);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;color:var(--eng);display:block;letter-spacing:.1em}
+
+  /* ---------- RULES / VALIDATION ---------- */
+  .rules{margin-top:64px;background:var(--ink);color:#EDF2EE;padding:28px 28px 24px;border-radius:2px}
+  .rules h2{font-family:'Archivo',sans-serif;font-variation-settings:'wdth' 125;font-weight:850;font-size:clamp(22px,4vw,30px);text-transform:uppercase;margin-bottom:16px}
+  .rules h2 span{color:#F2A35C}
+  .rules ul{list-style:none}
+  .rules li{padding:10px 0;border-top:1px dashed #3A4540;font-size:14.5px;display:grid;grid-template-columns:30px 1fr;gap:10px}
+  .rules li .k{font-family:'JetBrains Mono',monospace;font-weight:700;color:#F2A35C}
+  .footer{margin-top:40px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);text-align:center}
+
+  @media(max-width:680px){
+    .loop-track{grid-template-columns:1fr;border-bottom:none}
+    .loop-step{border-right:none;border-bottom:1px dashed var(--rule)}
+    .loop-step:last-child{border-bottom:1.5px solid var(--ink)}
+    .eng-grid{grid-template-columns:1fr}
+    .ladder ol{grid-template-columns:1fr 1fr}
+    .tl-cell .wk{display:none}
+    .week{grid-template-columns:64px 1fr}
+    .phase-head .span{margin-left:0;width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">
+    <span>Prepared for: The self-taught</span>
+    <span>Author: Israel Adigun — Software Developer, 23, UWM grad</span>
+    <span>Duration: 24 weeks</span>
+    <span>Load: 1.5–2 hrs/day + 30 min English</span>
+    <span>Rev. 06.2026</span>
+  </div>
+  <h1>The<br>Valedictorian<br><span class="accent">Protocol</span></h1>
+  <p class="thesis">High-school sciences and English, rebuilt from the ground up — run like your DSA curriculum. <strong>One subject at a time, drilled to AP exam standard, with English trained daily as the delivery system for everything you learn.</strong></p>
+</header>
+
+<!-- SIGNATURE TIMELINE -->
+<div class="timeline" role="img" aria-label="24-week program timeline: weeks 1–7 chemistry, 8–12 physics, 13–20 biology, 21–24 synthesis, with a continuous English track underneath">
+  <div class="timeline-label"><span>Program map</span><span>WK 01 ──── WK 24</span></div>
+  <div class="tl-grid">
+    <div class="tl-cell tl-chem"><span class="wk">1</span></div><div class="tl-cell tl-chem"><span class="wk">2</span></div><div class="tl-cell tl-chem"><span class="wk">3</span></div><div class="tl-cell tl-chem"><span class="wk">4</span></div><div class="tl-cell tl-chem"><span class="wk">5</span></div><div class="tl-cell tl-chem"><span class="wk">6</span></div><div class="tl-cell tl-chem"><span class="wk">7</span></div>
+    <div class="tl-cell tl-phys"><span class="wk">8</span></div><div class="tl-cell tl-phys"><span class="wk">9</span></div><div class="tl-cell tl-phys"><span class="wk">10</span></div><div class="tl-cell tl-phys"><span class="wk">11</span></div><div class="tl-cell tl-phys"><span class="wk">12</span></div>
+    <div class="tl-cell tl-bio"><span class="wk">13</span></div><div class="tl-cell tl-bio"><span class="wk">14</span></div><div class="tl-cell tl-bio"><span class="wk">15</span></div><div class="tl-cell tl-bio"><span class="wk">16</span></div><div class="tl-cell tl-bio"><span class="wk">17</span></div><div class="tl-cell tl-bio"><span class="wk">18</span></div><div class="tl-cell tl-bio"><span class="wk">19</span></div><div class="tl-cell tl-bio"><span class="wk">20</span></div>
+    <div class="tl-cell tl-synth"><span class="wk">21</span></div><div class="tl-cell tl-synth"><span class="wk">22</span></div><div class="tl-cell tl-synth"><span class="wk">23</span></div><div class="tl-cell tl-synth"><span class="wk">24</span></div>
+  </div>
+  <div class="tl-english"></div>
+  <div class="tl-english-label">English — daily, all 24 weeks, no off days</div>
+  <div class="legend">
+    <span><i style="background:var(--chem)"></i>Chemistry</span>
+    <span><i style="background:var(--phys)"></i>Physics</span>
+    <span><i style="background:var(--bio)"></i>Biology</span>
+    <span><i style="background:var(--ink)"></i>Synthesis</span>
+    <span><i style="background:var(--eng)"></i>English</span>
+  </div>
+</div>
+
+<!-- DAILY LOOP -->
+<section class="loop">
+  <div class="phase-head p-synth" style="border-color:var(--ink)">
+    <span class="tag">Core engine</span>
+    <h2>The Daily Loop</h2>
+    <span class="span">Run every study day, in order</span>
+  </div>
+  <p class="phase-why" style="margin-top:14px">Same loop every day, regardless of subject. The order matters: you encode, immediately test, lock in what leaked, then prove you can explain it. Step 5 is where English fluency is actually built.</p>
+  <div class="loop-track">
+    <div class="loop-step"><span class="n">STEP 1</span><h4>Learn</h4><p>Khan Academy unit videos + reading for the day's topic. No note-taking marathons — watch, pause, predict.</p><span class="t">~40 min</span></div>
+    <div class="loop-step"><span class="n">STEP 2</span><h4>Drill</h4><p>Unit practice problems immediately after. Wrong answers are the curriculum — review every miss.</p><span class="t">~30 min</span></div>
+    <div class="loop-step"><span class="n">STEP 3</span><h4>Card</h4><p>Anki cards for every miss and every looked-up fact. Then clear the day's review queue. Non-negotiable.</p><span class="t">~15 min</span></div>
+    <div class="loop-step"><span class="n">STEP 4</span><h4>Teach</h4><p>Explain today's concept out loud in 60 seconds, no notes, like you're teaching it. If you stumble, you don't know it yet.</p><span class="t">~5 min</span></div>
+    <div class="loop-step"><span class="n">STEP 5</span><h4>English</h4><p>Read above your level (20–30 min) + write one tight summary paragraph of what you learned today.</p><span class="t">~30 min</span></div>
+  </div>
+</section>
+
+<!-- PHASE 1 CHEMISTRY -->
+<section class="phase p-chem">
+  <div class="phase-head">
+    <span class="tag">Phase 1</span>
+    <h2>Chemistry</h2>
+    <span class="span">Weeks 01–07 · AP Chemistry standard</span>
+  </div>
+  <p class="phase-why"><strong>Why first:</strong> chemistry is the bridge subject. Physics needs math you already have; biology leans on chemistry constantly. Everything here compounds — skip nothing.</p>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">01</span></div><div class="body"><h3>Atomic Structure &amp; Periodicity</h3><p class="topics">Atoms, isotopes, ions · electron configuration &amp; orbitals · photoelectron spectroscopy basics · periodic trends: atomic radius, ionization energy, electronegativity.</p><p class="drill"><b>Drill</b> — Khan AP Chem Unit 1 quizzes + unit test. Teach-back: explain why ionization energy rises across a period.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">02</span></div><div class="body"><h3>Bonding &amp; Molecular Geometry</h3><p class="topics">Ionic vs. covalent vs. metallic bonding · Lewis structures · VSEPR shapes · bond polarity &amp; dipoles · intermolecular forces (London, dipole-dipole, H-bonding).</p><p class="drill"><b>Drill</b> — Draw Lewis structures cold for 20 molecules; predict shape + polarity. Khan Units 2–3.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">03</span></div><div class="body"><h3>Stoichiometry</h3><p class="topics">The mole &amp; Avogadro · balancing equations · limiting reagent · percent yield · empirical &amp; molecular formulas · reaction types.</p><p class="drill"><b>Drill</b> — This is the math-heavy week; it plays to your strengths. 30+ stoich problems until conversions are reflexive. Khan Unit 4.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">04</span></div><div class="body"><h3>Gases &amp; Solutions</h3><p class="topics">Ideal gas law &amp; kinetic molecular theory · partial pressures · molarity &amp; dilutions · solubility · colligative properties overview.</p><p class="drill"><b>Drill</b> — PV=nRT problem set; mixed dilution calculations. Teach-back: why does a balloon shrink in cold air, at the particle level?</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">05</span></div><div class="body"><h3>Thermodynamics &amp; Kinetics</h3><p class="topics">Enthalpy, entropy, Gibbs free energy · Hess's law · calorimetry · rate laws &amp; reaction order · activation energy &amp; catalysts.</p><p class="drill"><b>Drill</b> — Khan Units 5–6. Predict spontaneity from ΔG for 10 reactions; derive rate laws from data tables.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">06</span></div><div class="body"><h3>Equilibrium</h3><p class="topics">Dynamic equilibrium · K<sub>eq</sub> expressions · ICE tables · Le Chatelier's principle · reaction quotient Q vs. K.</p><p class="drill"><b>Drill</b> — ICE table problems until automatic. Teach-back: explain Le Chatelier using a real industrial example (Haber process).</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">07</span></div><div class="body"><h3>Acids, Bases &amp; Electrochemistry</h3><p class="topics">pH &amp; pOH · strong vs. weak acids · titrations &amp; buffers · redox reactions · galvanic cells &amp; cell potential.</p><p class="drill"><b>Drill</b> — Titration curve interpretation; balance redox in acidic/basic solution. Khan Units 7–9 highlights.</p></div></div>
+
+  <div class="boss"><b>End-of-phase boss fight</b> — Take a full released AP Chemistry exam, timed. Target: 4–5 equivalent. Every miss becomes an Anki card before Phase 2 starts.</div>
+</section>
+
+<!-- PHASE 2 PHYSICS -->
+<section class="phase p-phys">
+  <div class="phase-head">
+    <span class="tag">Phase 2</span>
+    <h2>Physics</h2>
+    <span class="span">Weeks 08–12 · AP Physics 1 + select 2</span>
+  </div>
+  <p class="phase-why"><strong>Compressed to 5 weeks</strong> because your math and CS background carry most of the load — and half of this is formalizing intuitions you already chase recreationally.</p>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">08</span></div><div class="body"><h3>Kinematics &amp; Dynamics</h3><p class="topics">Vectors &amp; motion graphs · constant acceleration equations · projectile motion · Newton's three laws · friction &amp; inclined planes · free-body diagrams.</p><p class="drill"><b>Drill</b> — Free-body diagram for every problem, no exceptions. 25 mixed kinematics/dynamics problems.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">09</span></div><div class="body"><h3>Energy, Momentum &amp; Gravitation</h3><p class="topics">Work-energy theorem · conservation of energy · momentum &amp; impulse · elastic vs. inelastic collisions · uniform circular motion · universal gravitation &amp; orbits.</p><p class="drill"><b>Drill</b> — Solve the same collision problems via momentum AND energy; know when each applies. Teach-back: why astronauts float (it's not "no gravity").</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">10</span></div><div class="body"><h3>Rotation, Oscillations &amp; Waves</h3><p class="topics">Torque &amp; angular momentum · rotational inertia · simple harmonic motion · wave properties · sound &amp; Doppler · superposition, interference &amp; diffraction.</p><p class="drill"><b>Drill</b> — Your single-slit question lives here — now derive it properly. Standing wave and interference pattern problems.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">11</span></div><div class="body"><h3>Electricity &amp; Magnetism</h3><p class="topics">Electric fields &amp; Coulomb's law · circuits: Ohm's law, series/parallel, Kirchhoff · capacitors basics · magnetic fields &amp; forces · electromagnetic induction.</p><p class="drill"><b>Drill</b> — Build/analyze 15 circuit problems. Teach-back: explain how a generator works using induction, in 60 seconds.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">12</span></div><div class="body"><h3>Thermo &amp; Modern Physics</h3><p class="topics">Heat transfer &amp; thermodynamic laws · gas laws revisited (chem callback) · photoelectric effect · wave-particle duality, formalized · atomic models &amp; nuclear basics.</p><p class="drill"><b>Drill</b> — Photoelectric effect problem set; connect E=hf to your existing duality intuitions.</p></div></div>
+
+  <div class="boss"><b>End-of-phase boss fight</b> — Full released AP Physics 1 exam, timed, plus selected Physics 2 free-response on E&amp;M and modern physics. Misses → Anki.</div>
+</section>
+
+<!-- PHASE 3 BIOLOGY -->
+<section class="phase p-bio">
+  <div class="phase-head">
+    <span class="tag">Phase 3</span>
+    <h2>Biology</h2>
+    <span class="span">Weeks 13–20 · AP Biology standard</span>
+  </div>
+  <p class="phase-why"><strong>Last and longest</strong> — it's the most memorization-heavy, so Anki carries the most weight here. Treat the cell like system architecture: mechanisms and data flow, not vocabulary lists.</p>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">13</span></div><div class="body"><h3>Chemistry of Life</h3><p class="topics">Water's properties · carbon &amp; functional groups · macromolecules: carbs, lipids, proteins, nucleic acids · enzyme structure, function &amp; inhibition.</p><p class="drill"><b>Drill</b> — Direct payoff from Phase 1. Map each macromolecule: monomer → polymer → function. Khan AP Bio Unit 1.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">14</span></div><div class="body"><h3>Cells &amp; Membranes</h3><p class="topics">Prokaryote vs. eukaryote · organelles &amp; their jobs · membrane structure · passive vs. active transport · osmosis &amp; tonicity · surface-area-to-volume.</p><p class="drill"><b>Drill</b> — Diagram a cell as a system architecture: each organelle is a service, label its API. Khan Unit 2.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">15</span></div><div class="body"><h3>Cellular Energetics</h3><p class="topics">ATP as energy currency · glycolysis, Krebs cycle, electron transport chain · fermentation · photosynthesis: light reactions &amp; Calvin cycle.</p><p class="drill"><b>Drill</b> — Trace one glucose molecule end-to-end out loud. Teach-back: why do we breathe oxygen, mechanistically?</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">16</span></div><div class="body"><h3>Cell Cycle &amp; Communication</h3><p class="topics">Cell signaling pathways · feedback loops (positive/negative) · the cell cycle &amp; checkpoints · mitosis · what cancer is, mechanistically.</p><p class="drill"><b>Drill</b> — Map a signal transduction pathway like an event-driven system. Khan Units 3–4.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">17</span></div><div class="body"><h3>Heredity</h3><p class="topics">Meiosis &amp; genetic variation · Mendel's laws · Punnett squares, mono &amp; dihybrid · non-Mendelian: linkage, sex-linked traits, incomplete dominance · chromosomal disorders.</p><p class="drill"><b>Drill</b> — 20 genetics problems; treat Punnett squares as probability trees (they are). Khan Unit 5.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">18</span></div><div class="body"><h3>Molecular Genetics</h3><p class="topics">DNA structure &amp; replication · transcription &amp; translation · gene regulation (operons, epigenetics intro) · mutations · biotech: PCR, gel electrophoresis, CRISPR overview.</p><p class="drill"><b>Drill</b> — DNA → RNA → protein is literally a compiler pipeline; explain it that way, then in proper bio terms. Khan Unit 6.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">19</span></div><div class="body"><h3>Evolution</h3><p class="topics">Natural selection &amp; fitness · evidence for evolution · Hardy-Weinberg equilibrium · genetic drift &amp; gene flow · speciation · phylogenetic trees.</p><p class="drill"><b>Drill</b> — Hardy-Weinberg math problems (your stats instincts apply). Read tree diagrams cold. Khan Unit 7.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">20</span></div><div class="body"><h3>Ecology &amp; Physiology</h3><p class="topics">Energy flow &amp; trophic levels · population growth models · community interactions · biogeochemical cycles · human body systems overview: nervous, circulatory, immune, endocrine.</p><p class="drill"><b>Drill</b> — Logistic vs. exponential growth (you know these curves from Big-O). Khan Unit 8 + physiology survey.</p></div></div>
+
+  <div class="boss"><b>End-of-phase boss fight</b> — Full released AP Biology exam, timed. The free-response sections double as English writing assessment: clear, mechanistic explanations under time pressure.</div>
+</section>
+
+<!-- ENGLISH TRACK -->
+<section class="phase p-eng">
+  <div class="phase-head">
+    <span class="tag">Parallel track</span>
+    <h2>English</h2>
+    <span class="span">Daily · all 24 weeks · ~30 min</span>
+  </div>
+  <p class="phase-why"><strong>English isn't a phase, it's the operating system.</strong> Reading rebuilds vocabulary and sentence rhythm; the teach-back drill builds spoken fluency; daily writing makes both permanent. This also directly attacks the "narrate your reasoning aloud" gap from your interview prep — double duty.</p>
+
+  <div class="eng-grid">
+    <div class="eng-card"><h3>Read</h3><span class="freq">Daily · 20–30 min</span><p>Writing above your current level: rotate The Atlantic, The Economist, and Paul Graham essays. Plus one novel at a time from the ladder below. Look up every unfamiliar word — straight into Anki.</p></div>
+    <div class="eng-card"><h3>Speak</h3><span class="freq">Daily · the teach-back</span><p>Step 4 of the daily loop is your speaking rep: 60 seconds, no notes, teaching today's concept to an imaginary student. Precision under time pressure is the skill.</p></div>
+    <div class="eng-card"><h3>Write</h3><span class="freq">Daily · 1 paragraph</span><p>One tight paragraph summarizing what you learned. No filler words, no hedging. Strong writing and strong speaking are the same skill at different speeds.</p></div>
+    <div class="eng-card"><h3>Record &amp; Review</h3><span class="freq">Weekly · 3 min</span><p>Record yourself explaining the week's hardest concept for 3 minutes. Listen back. Painful, but it's the fastest feedback loop that exists. Note two fixes for next week.</p></div>
+  </div>
+
+  <div class="ladder">
+    <h3>The Novel Ladder — one per month, ascending difficulty</h3>
+    <ol>
+      <li>Of Mice and Men — Steinbeck</li>
+      <li>Fahrenheit 451 — Bradbury</li>
+      <li>The Great Gatsby — Fitzgerald</li>
+      <li>1984 — Orwell</li>
+      <li>Brave New World — Huxley</li>
+      <li>Slaughterhouse-Five — Vonnegut</li>
+    </ol>
+  </div>
+</section>
+
+<!-- PHASE 4 SYNTHESIS -->
+<section class="phase p-synth">
+  <div class="phase-head">
+    <span class="tag">Phase 4</span>
+    <h2>Synthesis</h2>
+    <span class="span">Weeks 21–24 · The final boss</span>
+  </div>
+  <p class="phase-why"><strong>Knowing three subjects separately is a senior. Connecting them is a valedictorian.</strong> This phase converts retained facts into the kind of cross-domain fluency that makes you sound like you actually understand things — because you will.</p>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">21</span></div><div class="body"><h3>Weak-Point Sweep I</h3><p class="topics">Your Anki stats are the map — sort by lowest retention, attack the worst 20%. Retake the lowest-scoring sections from each phase exam.</p><p class="drill"><b>Drill</b> — No new content. Pure repair. Rewrite leaky Anki cards so they actually stick.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">22</span></div><div class="body"><h3>Weak-Point Sweep II</h3><p class="topics">Second pass on remaining weak units. Mixed-subject problem sets — interleaving forces real recall instead of context-cued recall.</p><p class="drill"><b>Drill</b> — Random topic generator: pull any concept from the 20 weeks, explain it cold in 60 seconds.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">23</span></div><div class="body"><h3>Cross-Discipline Synthesis</h3><p class="topics">Explain topics that need all three subjects: why ATP stores energy (chem + bio) · how nerve signals propagate (physics + bio) · why hemoglobin binds oxygen (all three) · how greenhouse gases work (chem + physics + ecology).</p><p class="drill"><b>Drill</b> — Write one 300-word essay per topic. This is your English final, disguised as science.</p></div></div>
+
+  <div class="week"><div class="wknum"><span class="lab">WEEK</span><span class="num">24</span></div><div class="body"><h3>Final Boss</h3><p class="topics">Fresh released exams for all three sciences, full timed conditions, across the week. Plus one recorded 5-minute talk: explain a topic of your choice to a non-technical audience.</p><p class="drill"><b>Drill</b> — Target: 4–5 equivalent on every exam. That's the objective definition of "valedictorian level." Hit it and you're done.</p></div></div>
+</section>
+
+<!-- RULES -->
+<section class="rules">
+  <h2>Non-Negotiable <span>Rules</span></h2>
+  <ul>
+    <li><span class="k">01</span><span>Never re-watch or re-read passively. If you're reviewing, you're testing yourself. Recall is the only thing that counts.</span></li>
+    <li><span class="k">02</span><span>The Anki queue gets cleared every single day, including rest days. 15 minutes protects months of work.</span></li>
+    <li><span class="k">03</span><span>If the 60-second teach-back stumbles, the concept goes back on tomorrow's list. Fluency is the bar, not familiarity.</span></li>
+    <li><span class="k">04</span><span>Wrong answers are the curriculum. Every miss becomes a card the same day, or it's a miss you'll repeat.</span></li>
+    <li><span class="k">05</span><span>Falling behind? Cut scope, not the loop. A shallow week with all five steps beats a deep week with two.</span></li>
+    <li><span class="k">06</span><span>Validation is external: released AP exams, timed, scored honestly. No vibes-based progress assessment.</span></li>
+  </ul>
+</section>
+
+<p class="footer">Valedictorian Protocol · 24 weeks · Chem → Phys → Bio + English daily · Rev 06.2026<br>Site author: Israel Adigun — Software Developer, 23, UWM grad</p>
+
+</div>
+</body>
+</html>
