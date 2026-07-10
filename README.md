@@ -27,7 +27,7 @@ Each week has defined topics and a drill target. Each phase ends with a timed, r
 ```bash
 git clone https://github.com/israel1jol/valedictorian-protocol.git
 cd valedictorian-protocol
-# open index.html in a browser — that's it
+# open index.html in a browser
 ```
 
 ## Roadmap
