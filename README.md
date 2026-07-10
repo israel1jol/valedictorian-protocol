@@ -2,7 +2,7 @@
 
 A 24-week, self-paced curriculum for rebuilding high-school sciences (Chemistry, Physics, Biology) and English fluency from the ground up — benchmarked against AP exam standards and run like an interview-prep grind.
 
-**Live site:** https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
+**Live site:** https://israel1jol.github.io/valedictorian-protocol/
 
 ## What it is
 
@@ -25,14 +25,10 @@ Each week has defined topics and a drill target. Each phase ends with a timed, r
 ## Run it locally
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git
-cd YOUR-REPO-NAME
+git clone https://github.com/israel1jol/valedictorian-protocol.git
+cd valedictorian-protocol
 # open index.html in a browser — that's it
 ```
-
-## Deploy
-
-Hosted on GitHub Pages: Settings → Pages → Deploy from a branch → `main` / root.
 
 ## Roadmap
 
